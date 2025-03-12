@@ -31,13 +31,18 @@ router.post('/', async function(req, res, next) {
   
   try {    
     // request body
-    let { username, email, password, isApproved } = req.body
+    let { username, email, password } = req.body
     let user = await userSchema.findOne({ username, email })
+
+    console.log("Login user --> ", user)
 
     // check condition if no username and password
     if (user) {
-
+      console.log("useruser", user)
       let comparePassword = await bcrypt.compare(password, user.password)
+      console.log("password", bcrypt.hash(password, 10))
+      console.log("hash pass", user.password)
+      console.log("compare pass", comparePassword)
       if (comparePassword) {
         if (!user.isApproved) {
           throw "Please Verify your Account."
